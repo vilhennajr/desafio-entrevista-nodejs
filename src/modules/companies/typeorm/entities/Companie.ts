@@ -9,8 +9,8 @@ import {
 
 @Entity('companies')
 class Companie {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn()
+  id: number;
 
   @Column()
   name: string;
@@ -25,19 +25,16 @@ class Companie {
   phone: string;
 
   @Column()
-  parking_spaces_motorcycles: string;
+  parking_spaces_motorcycles: number;
 
   @Column()
-  parking_spaces_cars: string;
+  parking_spaces_cars: number;
 
   @CreateDateColumn()
   created_at: Date;
 
   @UpdateDateColumn()
   updated_at: Date;
-
-  @DeleteDateColumn()
-  deleted_at: Date;
 }
 
 export default Companie;

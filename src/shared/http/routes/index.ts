@@ -1,9 +1,8 @@
 import { Router } from 'express';
+import companiesRouter from '@modules/companies/routes/companies.routes';
 
 const routes = Router();
 
-routes.get('/', (request, response) => {
-  return response.json({ message: 'Hello Dr Consulta!' });
-});
+routes.use('/companies', companiesRouter);
 
 export default routes;
