@@ -1,17 +1,21 @@
+import { inject, injectable } from 'tsyringe';
 import AppError from '@shared/errors/AppError';
-import { getCustomRepository } from 'typeorm';
-import Companie from '../typeorm/entities/Companie';
-import CompanieRepository from '../typeorm/repositories/CompaniesRepository';
+import Companie from '../infra/typeorm/entities/Companie';
+import { IShowCompanie } from '../domain/models/IShowCompanie';
+import { ICompaniesRepository } from '../domain/repositories/ICompaniesRepository';
 
-interface IRequest {
-  id: string;
-}
-
+@injectable()
 class ShowCompanieService {
-  public async execute({ id }: IRequest): Promise<Companie> {
-    const companiesRepository = getCustomRepository(CompanieRepository);
 
-    const companie = await companiesRepository.findOne(id);
+  constructor(
+
+    @inject('CompaniesRepository')
+    private companiesRepository: ICompaniesRepository
+
+  ) {}
+
+  public async execute({ id }: IShowCompanie): Promise<Companie> {
+    const companie = await this.companiesRepository.findById(id);
 
     if (!companie) {
       throw new AppError('Companie not found.');

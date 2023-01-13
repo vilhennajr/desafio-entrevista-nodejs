@@ -1,19 +1,19 @@
+import { inject, injectable } from 'tsyringe';
 import AppError from '@shared/errors/AppError';
-import { getCustomRepository } from 'typeorm';
-import Companie from '../typeorm/entities/Companie';
-import CompanieRepository from '../typeorm/repositories/CompaniesRepository';
+import { IUpdateCompanie } from '../domain/models/IUpdateCompanie';
+import Companie from '../infra/typeorm/entities/Companie';
+import { ICompaniesRepository } from '../domain/repositories/ICompaniesRepository';
 
-interface IRequest {
-  id: string;
-  name: string;
-  cnpj: string;
-  address: string;
-  phone: string;
-  parking_spaces_motorcycles: number;
-  parking_spaces_cars: number;
-}
-
+@injectable()
 class UpdateCompanieService {
+
+  constructor(
+
+    @inject('CompaniesRepository')
+    private companiesRepository: ICompaniesRepository
+
+  ) {}
+
   public async execute({
     id,
     name,
@@ -21,10 +21,8 @@ class UpdateCompanieService {
     phone,
     parking_spaces_motorcycles,
     parking_spaces_cars,
-  }: IRequest): Promise<Companie> {
-    const companiesRepository = getCustomRepository(CompanieRepository);
-
-    const companie = await companiesRepository.findOne(id);
+  }: IUpdateCompanie): Promise<Companie> {
+    const companie = await this.companiesRepository.findById(id);
 
     if (!companie) {
       throw new AppError('Companie not found.');
@@ -36,7 +34,7 @@ class UpdateCompanieService {
     companie.parking_spaces_motorcycles = parking_spaces_motorcycles;
     companie.parking_spaces_cars = parking_spaces_cars;
 
-    await companiesRepository.save(companie);
+    await this.companiesRepository.save(companie);
 
     return companie;
   }

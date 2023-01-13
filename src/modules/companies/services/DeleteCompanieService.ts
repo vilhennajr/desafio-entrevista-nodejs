@@ -1,22 +1,26 @@
+import { inject, injectable } from 'tsyringe';
 import AppError from '@shared/errors/AppError';
-import { getCustomRepository } from 'typeorm';
-import CompaniesRepository from '../typeorm/repositories/CompaniesRepository';
+import { IDeleteCompanie } from '../domain/models/IDeleteCompanie';
+import { ICompaniesRepository } from '../domain/repositories/ICompaniesRepository';
 
-interface IRequest {
-  id: string;
-}
-
+@injectable()
 class DeleteCompanieService {
-  public async execute({ id }: IRequest): Promise<void> {
-    const companiesRepository = getCustomRepository(CompaniesRepository);
 
-    const companie = await companiesRepository.findOne(id);
+  constructor(
+
+    @inject('CompaniesRepository')
+    private companiesRepository: ICompaniesRepository
+
+  ) {}
+
+  public async execute({ id }: IDeleteCompanie): Promise<void> {
+    const companie = await this.companiesRepository.findById(id);
 
     if (!companie) {
       throw new AppError('Companie not found.');
     }
 
-    await companiesRepository.remove(companie);
+    await this.companiesRepository.remove(companie);
   }
 }
 

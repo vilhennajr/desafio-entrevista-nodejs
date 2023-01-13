@@ -1,18 +1,19 @@
 import AppError from '@shared/errors/AppError';
-import { getCustomRepository } from 'typeorm';
-import Companie from '../typeorm/entities/Companie';
-import CompanieRepository from '../typeorm/repositories/CompaniesRepository';
+import { inject, injectable } from 'tsyringe';
+import { ICompanie } from '../domain/models/ICompanie';
+import { ICreateCompanie } from '../domain/models/ICreateCompanie';
+import { ICompaniesRepository } from '../domain/repositories/ICompaniesRepository';
 
-interface IRequest {
-  name: string;
-  cnpj: string;
-  address: string;
-  phone: string;
-  parking_spaces_motorcycles: number;
-  parking_spaces_cars: number;
-}
-
+@injectable()
 class CreateCompanieService {
+
+  constructor(
+
+    @inject('CompaniesRepository')
+    private companiesRepository: ICompaniesRepository
+
+  ) {}
+
   public async execute({
     name,
     cnpj,
@@ -20,15 +21,14 @@ class CreateCompanieService {
     phone,
     parking_spaces_motorcycles,
     parking_spaces_cars,
-  }: IRequest): Promise<Companie> {
-    const companiesRepository = getCustomRepository(CompanieRepository);
-    const companieExists = await companiesRepository.findByCnpj(cnpj);
+  }: ICreateCompanie): Promise<ICompanie> {
+    const companieExists = await this.companiesRepository.findByCnpj(cnpj);
 
     if (companieExists) {
       throw new AppError('There is already one companie with this cnpj');
     }
 
-    const companie = await companiesRepository.create({
+    const companie = await this.companiesRepository.create({
       name,
       cnpj,
       address,
@@ -36,8 +36,6 @@ class CreateCompanieService {
       parking_spaces_motorcycles,
       parking_spaces_cars,
     });
-
-    await companiesRepository.save(companie);
 
     return companie;
   }

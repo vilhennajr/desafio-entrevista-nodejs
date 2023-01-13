@@ -1,25 +1,35 @@
-import { getCustomRepository } from 'typeorm';
-import Companie from '../typeorm/entities/Companie';
-import CompanieRepository from '../typeorm/repositories/CompaniesRepository';
+import { inject, injectable } from 'tsyringe';
+import { ICompaniesRepository } from '../domain/repositories/ICompaniesRepository';
+import { ICompaniePaginate } from '../domain/models/ICompaniePaginate';
 
-interface IPaginateCompanie {
-  from: number;
-  to: number;
-  per_page: number;
-  total: number;
-  current_page: number;
-  prev_page: number | null;
-  next_page: number | null;
-  data: Companie[];
+interface SearchParams {
+  page: number;
+  limit: number;
 }
 
+@injectable()
 class ListCompanieService {
-  public async execute(): Promise<IPaginateCompanie> {
-    const companiesRepository = getCustomRepository(CompanieRepository);
 
-    const companies = await companiesRepository.createQueryBuilder().paginate();
+  constructor(
 
-    return companies as IPaginateCompanie;
+    @inject('CompaniesRepository')
+    private companiesRepository: ICompaniesRepository
+
+  ) {}
+
+  public async execute({
+    page,
+    limit,
+  }: SearchParams): Promise<ICompaniePaginate> {
+    const take = limit;
+    const skip = (Number(page) - 1) * take;
+    const companies = await this.companiesRepository.findAll({
+      page,
+      skip,
+      take,
+    });
+
+    return companies;
   }
 }
 

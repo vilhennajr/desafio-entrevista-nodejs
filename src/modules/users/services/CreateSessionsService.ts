@@ -2,9 +2,9 @@ import AppError from '@shared/errors/AppError';
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 import authConfig from '@config/auth';
-import { getCustomRepository } from 'typeorm';
-import User from '../typeorm/entities/User';
-import UsersRepository from '../typeorm/repositories/UsersRepository';
+import { inject, injectable } from 'tsyringe';
+import { IUser } from '../domain/models/IUser';
+import { IUserRepository } from '../domain/repositories/IUsersRepository';
 
 interface IRequest {
   cpf: string;
@@ -12,14 +12,25 @@ interface IRequest {
 }
 
 interface IResponse {
-  user: User;
+  user: IUser;
   token: string;
 }
 
+@injectable()
 class CreateSessionsService {
-  public async execute({ cpf, password }: IRequest): Promise<IResponse> {
-    const usersRepository = getCustomRepository(UsersRepository);
-    const user = await usersRepository.findByCpf(cpf);
+
+  constructor(
+
+    @inject('UsersRepository')
+    private usersRepository: IUserRepository
+
+  ) {}
+
+  public async execute({
+    cpf,
+    password,
+  }: IRequest): Promise<IResponse> {
+    const user = await this.usersRepository.findByCpf(cpf);
 
     if (!user) {
       throw new AppError('Incorrect cpf/password combination.', 401);
