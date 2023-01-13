@@ -1,13 +1,7 @@
 ![Dr Consulta](https://drconsulta.com/_next/image?url=%2Fimages%2FLogo-Dr-Consulta-Branco.png&w=128&q=100 "DrConsulta")
 
-*"Salvar vidas e cuidar das pessoas porque elas não podem esperar nas filas da saúde."*
-Conheça: www.drconsulta.com
-
-## Objetivo
-O teste é destinado para vaga de Desenvolvedor Back-end entendo como o candidato efetuou a solução e o raciocinio de criação
-
-## Project - API
-Criar uma API REST para gerenciar um estacionamento de carros e motos.
+## Proposta - API
+API REST para gerenciar um estacionamento de carros e motos.
 
 #### Stack tecnológica
 - TypeOrm
@@ -23,5 +17,11 @@ Criar uma API REST para gerenciar um estacionamento de carros e motos.
 ### Regras de Negócios Aplicadas
 - ...
 
-## Flaviano Vilhena!
+### Instruções para rodar a aplicação
+- ...
+
+## Flaviano Vilhena! - 11913509334
 Agradeço a oportunidade de participar do processo selectivo Dr Consulta! 😄
+
+*"Salvar vidas e cuidar das pessoas porque elas não podem esperar nas filas da saúde."*
+Conheça: www.drconsulta.com
