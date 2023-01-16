@@ -17,6 +17,28 @@
 #### Instruções para rodar a aplicação
 - ...
 
+#### Rotas
+
+- POST http://localhost:4433/companies
+- GET http://localhost:4433/companies
+- GET http://localhost:4433/companies/:id
+- PUT http://localhost:4433/companies/:id
+- DELETE http://localhost:4433/companies/:id
+
+- POST http://localhost:4433/users
+- GET http://localhost:4433/users
+- GET http://localhost:4433/users/:id
+- PUT http://localhost:4433/users/:id
+- DELETE http://localhost:4433/users/:id
+
+- POST http://localhost:4433/vehicles
+- GET http://localhost:4433/vehicles
+- GET http://localhost:4433/vehicles/:id
+- PUT http://localhost:4433/vehicles/:id
+- DELETE http://localhost:4433/vehicles/:id
+
+- POST http://localhost:4433/sessions
+
 ##### Flaviano Vilhena! - 11913509334
 Agradeço a oportunidade de participar do processo selectivo Dr Consulta! 😄
 
