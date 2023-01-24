@@ -9,10 +9,10 @@ export type SearchParams = {
 };
 
 export interface IUserRepository {
-  findByCpf(cpf: string): Promise<IUser | undefined>;
+  findByCpf(cpf: string): Promise<IUser | null>;
   create(data: ICreateUser): Promise<IUser>;
   save(user: IUser): Promise<IUser>;
   findAll({ page, skip, take }: SearchParams): Promise<IUserPaginate>;
-  findById(id: string): Promise<IUser | undefined>;
+  findById(id: string): Promise<IUser | null>;
   remove(user: IUser): Promise<void>;
 }

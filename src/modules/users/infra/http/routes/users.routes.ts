@@ -4,8 +4,9 @@ import { celebrate, Joi, Segments } from 'celebrate';
 
 const usersRouter = Router();
 const usersController = new UsersController();
+import isAuthenticated from '@shared/infra/http/middlewares/isAuthenticated';
 
-usersRouter.get('/', usersController.index);
+usersRouter.get('/', isAuthenticated, usersController.index);
 
 usersRouter.get(
   '/:id',
@@ -14,6 +15,7 @@ usersRouter.get(
       id: Joi.string().required(),
     },
   }),
+  isAuthenticated,
   usersController.show,
 );
 
@@ -39,6 +41,7 @@ usersRouter.put(
       id: Joi.string().required(),
     },
   }),
+  isAuthenticated,
   usersController.update,
 );
 
@@ -49,6 +52,7 @@ usersRouter.delete(
       id: Joi.string().required(),
     },
   }),
+  isAuthenticated,
   usersController.delete,
 );
 

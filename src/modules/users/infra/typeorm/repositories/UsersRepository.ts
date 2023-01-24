@@ -1,16 +1,17 @@
 import { IUserPaginate } from '@modules/users/domain/models/IUserPaginate';
 import { ICreateUser } from '@modules/users/domain/models/ICreateUser';
 import { IUserRepository } from '@modules/users/domain/repositories/IUsersRepository';
-import { getRepository, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import User from '../entities/User';
 import { SearchParams } from '../../../domain/repositories/IUsersRepository';
+import { dataSource } from '@shared/infra/typeorm';
 
 class UserRepository implements IUserRepository {
 
   private ormRepository: Repository<User>
 
   constructor() {
-    this.ormRepository = getRepository(User);
+    this.ormRepository = dataSource.getRepository(User);
   }
 
   public async create({ name, cpf, password }: ICreateUser): Promise<User> {
@@ -31,21 +32,13 @@ class UserRepository implements IUserRepository {
 
   }
 
-  public async findByCpf(cpf: string): Promise<User | undefined> {
-    const user = this.ormRepository.findOne({
-      where: {
-        cpf,
-      },
-    });
+  public async findByCpf(cpf: string): Promise<User | null> {
+    const user = this.ormRepository.findOneBy({ cpf });
     return user;
   }
 
-  public async findById(id: string): Promise<User | undefined> {
-    const user = this.ormRepository.findOne({
-      where: {
-        id,
-      },
-    });
+  public async findById(id: string): Promise<User | null> {
+    const user = this.ormRepository.findOneBy({ id: Number(id) });
     return user;
   }
 

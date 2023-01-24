@@ -43,7 +43,7 @@
     "nodemailer": "^6.4.17",
     "reflect-metadata": "^0.1.13",
     "tsyringe": "^4.4.0",
-    "typeorm": "^0.2.29",
+    "typeorm": "^0.3.11",
     "typeorm-pagination": "^2.0.1"
   }
 }

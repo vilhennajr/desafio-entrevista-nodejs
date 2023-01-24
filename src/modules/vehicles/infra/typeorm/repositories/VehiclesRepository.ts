@@ -1,16 +1,17 @@
 import { IVehiclePaginate } from '@modules/vehicles/domain/models/IVehiclePaginate';
 import { ICreateVehicle } from '@modules/vehicles/domain/models/ICreateVehicle';
 import { IVehiclesRepository } from '@modules/vehicles/domain/repositories/IVehiclesRepository';
-import { getRepository, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import Vehicle from '../entities/Vehicle';
 import { SearchParams } from '../../../domain/repositories/IVehiclesRepository';
+import { dataSource } from '@shared/infra/typeorm';
 
 class VehicleRepository implements IVehiclesRepository {
 
   private ormRepository: Repository<Vehicle>
 
   constructor() {
-    this.ormRepository = getRepository(Vehicle);
+    this.ormRepository = dataSource.getRepository(Vehicle);
   }
 
   public async create({ brand, model, color, sign, type }: ICreateVehicle): Promise<Vehicle> {
@@ -31,12 +32,8 @@ class VehicleRepository implements IVehiclesRepository {
 
   }
 
-  public async findById(id: string): Promise<Vehicle | undefined> {
-    const vehicle = this.ormRepository.findOne({
-      where: {
-        id,
-      },
-    });
+  public async findById(id: string): Promise<Vehicle | null> {
+    const vehicle = this.ormRepository.findOneBy({ id: Number(id) });
     return vehicle;
   }
 

@@ -12,6 +12,6 @@ export interface IVehiclesRepository {
   create(data: ICreateVehicle): Promise<IVehicle>;
   save(vehicle: IVehicle): Promise<IVehicle>;
   findAll({ page, skip, take }: SearchParams): Promise<IVehiclePaginate>;
-  findById(id: string): Promise<IVehicle | undefined>;
+  findById(id: string): Promise<IVehicle | null>;
   remove(vehicle: IVehicle): Promise<void>;
 }
